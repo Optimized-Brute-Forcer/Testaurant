@@ -1,8 +1,8 @@
-# Low Level Design - Testaurant BFF
+# Low Level Design - Testaurant Frontend
 
 ## 1. System Overview
 
-Testaurant BFF (Backend for Frontend) is the core service powering the Testaurant platform. It handles authentication, organization management, and the lifecycle of test entities (Workitems, Testcases, Testsuites). It exposes a REST API built with **FastAPI** and interacts with **MongoDB** for persistence.
+Testaurant is a platform for automated API and database testing. This repository contains the **React-based Frontend**, which provides a user-friendly interface for managing organizations, environments, and test executions. The backend (BFF) is an external service that handles core logic and persistence.
 
 ## 2. Database Design
 
@@ -12,12 +12,12 @@ The system uses **MongoDB** as the primary data store. The database is organized
 
 | Collection Name | Description | Key Indexes |
 | :--- | :--- | :--- |
-| [organizations](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/controllers/organization_controller.py#34-40) | Stores organization details including teams and DB credentials. | `organization_id` (Unique) |
+| `organizations` | Stores organization details including teams and DB credentials. | `organization_id` (Unique) |
 | `users` | Stores user profiles and Google Auth mapping. | `email` (Unique), `google_id` |
-| `workitem_master` | Stores definitions of atomic tasks (REST/SQL/Mongo). | [(organization_id, workitem_id)](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/main.py#48-56) (Unique) |
-| `testcase_master` | Stores test cases (ordered list of workitems). | [(organization_id, testcase_id)](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/main.py#48-56) (Unique) |
-| `testsuite_master` | Stores test suites (logical grouping of testcases). | [(organization_id, testsuite_id)](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/main.py#48-56) (Unique) |
-| `env_config` | Stores environment-specific configurations. | [(organization_id, config_key, environment)](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/main.py#48-56) (Unique) |
+| `workitem_master` | Stores definitions of atomic tasks (REST/SQL/Mongo). | `(organization_id, workitem_id)` (Unique) |
+| `testcase_master` | Stores test cases (ordered list of workitems). | `(organization_id, testcase_id)` (Unique) |
+| `testsuite_master` | Stores test suites (logical grouping of testcases). | `(organization_id, testsuite_id)` (Unique) |
+| `env_config` | Stores environment-specific configurations. | `(organization_id, config_key, environment)` (Unique) |
 | `run_workitem_audit` | Execution history for workitems. | `organization_id`, `created_date` |
 | `run_testcase_audit` | Execution history for testcases. | `organization_id`, `created_date` |
 | `run_testsuite_audit` | Execution history for testsuites. | `organization_id`, `created_date` |
@@ -57,11 +57,11 @@ The system uses Google Identity for authentication and JWT for session managemen
 3.  **AuthService** checks if the user exists in `users` collection.
     *   If **New User**: Creates user record, default role `VIEWER`.
     *   If **Existing User**: Updates login timestamp.
-4.  **AuthService** generates a JWT containing:
+4.  **AuthService (External)** generates a JWT containing:
     *   `user_id`
     *   `email`
     *   `organization_id`
-    *   [role](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/controllers/organization_controller.py#209-220)
+    *   `role`
 5.  **Frontend** receives JWT and attaches it to Authorization header `Bearer <token>` for subsequent requests.
 
 ```mermaid
@@ -101,7 +101,7 @@ Handles creation of organizations, team management, and member role assignment.
 2.  **OrganizationService** creates a pending request in the organization's [join_requests](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/controllers/organization_controller.py#184-191) array.
 3.  **Org Admin** views requests via `/organization/{org_id}/join-requests`.
 4.  **Org Admin** approves/rejects via `/handle`.
-    *   **Approve**: User is added to [members](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/controllers/organization_controller.py#165-172) list, `organization_id` updated in `users` collection.
+    *   **Approve**: User is added to members list, `organization_id` updated.
 
 ### 4.3 Core Entity Management (BFF)
 
@@ -115,7 +115,7 @@ Core entities (Workitems, Testcases, Testsuites) follow a uniform CRUD pattern.
 **Create Flow (Example: Workitem):**
 1.  **POST** `/bff/workitems`
 2.  **WorkitemService** generates a unique ID (e.g., `WI-1001`) using `counter_master`.
-3.  **WorkitemService** constructs [Workitem](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/models/workitem_models.py#66-97) object.
+3.  **WorkitemService** constructs the Workitem object.
 4.  **WorkitemService** inserts into `workitem_master`.
 
 **Read Flow:**
@@ -176,7 +176,7 @@ sequenceDiagram
 
 All database interactions are asynchronous, using `motor`.
 
-1.  **Connections**: Managed by [Database](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/database.py#7-93) class in [app/database.py](file:///Users/ashishsingh/Desktop/Testaurant/testaurant_bff/app/database.py). Connects on startup, disconnects on shutdown.
+1.  **Connections**: Managed by the external BFF service.
 2.  **Queries**:
     *   Standard CRUD: `db.collection.insert_one`, `db.collection.find`, `db.collection.update_one`.
     *   Aggregations: Used for stats (e.g., counting by type).
