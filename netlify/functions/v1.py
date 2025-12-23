@@ -1,3 +1,9 @@
+import os
+import sys
+
+# Add the current directory to sys.path so 'app' can be found during bundling
+sys.path.append(os.path.dirname(__file__))
+
 from app.main import app
 from mangum import Mangum
 
