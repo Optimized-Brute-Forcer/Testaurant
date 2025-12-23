@@ -8,8 +8,7 @@ from app.main import app
 from mangum import Mangum
 
 # Explicit handler for Netlify with lifespan enabled for DB connection
-# We use api_gateway_base_path to handle the /api prefix from redirects
-handler = Mangum(app, lifespan="on", api_gateway_base_path="/api")
+handler = Mangum(app, lifespan="on")
 
 @app.get("/test-path")
 async def test_path():
