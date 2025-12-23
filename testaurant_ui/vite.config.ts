@@ -7,9 +7,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/testaurant': {
-        target: 'http://localhost:8080',
+      '/api': {
+        target: 'https://testaurant-be.onrender.com',
         changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/testaurant/v1'),
       },
     },
   },
