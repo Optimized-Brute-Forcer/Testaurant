@@ -10,6 +10,11 @@
   directory = "netlify/functions"
 
 [[redirects]]
+  from = "/api/ping"
+  to = "/.netlify/functions/ping"
+  status = 200
+
+[[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/v1"
   status = 200
