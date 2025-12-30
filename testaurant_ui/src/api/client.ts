@@ -1,20 +1,18 @@
-import axios from 'axios'
+import axios, { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
+const FINAL_API_URL = 'https://testaurant-api-proxy.netlify.app'
 
-const API_BASE_URL = 'https://testaurant-api-proxy.netlify.app'
-
-console.log('--- TESTAURANT BUILD V5 ---')
-console.log('API Base URL:', API_BASE_URL)
-if (typeof window !== 'undefined') (window as any).TESTAURANT_URL = API_BASE_URL;
+console.log('--- TESTAURANT RELOADED V6 ---')
+console.log('Target URL:', FINAL_API_URL)
 
 const apiClient = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: FINAL_API_URL,
     headers: {
         'Content-Type': 'application/json',
     },
 })
 
 // Add auth token to requests
-apiClient.interceptors.request.use((config) => {
+apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem('access_token')
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
@@ -24,8 +22,8 @@ apiClient.interceptors.request.use((config) => {
 
 // Handle 401 errors
 apiClient.interceptors.response.use(
-    (response) => response,
-    (error) => {
+    (response: AxiosResponse) => response,
+    (error: any) => {
         if (error.response?.status === 401) {
             localStorage.removeItem('access_token')
             window.location.href = '/login'
