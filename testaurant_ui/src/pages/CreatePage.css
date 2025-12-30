@@ -135,10 +135,16 @@ textarea {
 
 .item-info {
     display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    color: #ffffff;
+}
+
+.item-main {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    color: #ffffff; /* Explicitly white for contrast */
 }
 
 .item-name {
@@ -155,10 +161,39 @@ textarea {
     text-transform: uppercase;
 }
 
+.item-details {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.detail-tag {
+    font-weight: 700;
+    color: #667eea;
+    min-width: 40px;
+}
+
+.detail-value {
+    font-family: 'Fira Code', monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.item-desc {
+    margin: 0;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
 .no-items {
     padding: 60px;
     text-align: center;
-    color: #ff4d4d; /* Red color to indicate something might be missing/wrong */
+    color: #ff4d4d;
+    /* Red color to indicate something might be missing/wrong */
     font-weight: bold;
     font-size: 16px;
     grid-column: 1 / -1;

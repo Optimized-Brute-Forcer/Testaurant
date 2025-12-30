@@ -257,7 +257,25 @@ export default function CreatePage() {
                             />
                         </div>
                     </div>
-                    {/* Headers could also use env vars but skipping for brevity as path/body are most common */}
+                    <div className="form-group">
+                        <label>Headers (JSON)</label>
+                        <textarea
+                            className="code-editor"
+                            value={JSON.stringify(workitemData.rest_config.headers, null, 2)}
+                            onChange={(e) => {
+                                try {
+                                    const parsed = JSON.parse(e.target.value)
+                                    setWorkitemData({
+                                        ...workitemData,
+                                        rest_config: { ...workitemData.rest_config, headers: parsed }
+                                    })
+                                } catch (err) {
+                                    // Handle invalid JSON silently while typing
+                                }
+                            }}
+                            placeholder='{ "Authorization": "Bearer {{TOKEN}}" }'
+                        />
+                    </div>
                     {(['POST', 'PUT', 'PATCH'].includes(workitemData.rest_config.method)) && (
                         <div className="form-group">
                             <label>
@@ -435,8 +453,33 @@ export default function CreatePage() {
                                 }}
                             />
                             <div className="item-info">
-                                <span className="item-name">{item.name}</span>
-                                <span className="item-badge">{item.workitem_type}</span>
+                                <div className="item-main">
+                                    <span className="item-name">{item.name}</span>
+                                    <span className="item-badge">{item.workitem_type}</span>
+                                </div>
+                                <div className="item-details">
+                                    {item.workitem_type === 'REST' && (
+                                        <>
+                                            <span className="detail-tag">{item.rest_config?.method}</span>
+                                            <span className="detail-value">{item.rest_config?.path}</span>
+                                        </>
+                                    )}
+                                    {item.workitem_type === 'SQL' && (
+                                        <>
+                                            <span className="detail-tag">{item.sql_config?.query_type}</span>
+                                            <span className="detail-value truncate">{item.sql_config?.query}</span>
+                                        </>
+                                    )}
+                                    {item.workitem_type === 'MONGO' && (
+                                        <>
+                                            <span className="detail-tag">{item.mongo_config?.operation}</span>
+                                            <span className="detail-value">{item.mongo_config?.collection}</span>
+                                        </>
+                                    )}
+                                </div>
+                                {item.description && (
+                                    <p className="item-desc">{item.description}</p>
+                                )}
                             </div>
                         </label>
                     ))}
@@ -472,7 +515,7 @@ export default function CreatePage() {
             <div className="form-group">
                 <label>Testcases</label>
                 <div className="item-selection-grid">
-                    {availableTestcases.map(tc => (
+                    {Array.isArray(availableTestcases) && availableTestcases.map(tc => (
                         <label key={tc.testcase_id} className="item-checkbox">
                             <input
                                 type="checkbox"
@@ -485,7 +528,13 @@ export default function CreatePage() {
                                 }}
                             />
                             <div className="item-info">
-                                <span className="item-name">{tc.name}</span>
+                                <div className="item-main">
+                                    <span className="item-name">{tc.testcase_title || tc.name}</span>
+                                    <span className="item-badge">{(tc.testcase_workitem_list?.length || tc.workitem_ids?.length || 0)} Steps</span>
+                                </div>
+                                {(tc.testcase_subtitle || tc.description) && (
+                                    <p className="item-desc">{tc.testcase_subtitle || tc.description}</p>
+                                )}
                             </div>
                         </label>
                     ))}
