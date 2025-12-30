@@ -65,4 +65,15 @@ a {
 input, textarea, select {
   font-family: inherit;
   outline: none;
+  font-size: 16px; /* Prevents auto-zoom on iOS */
+}
+
+button, .clickable {
+  min-height: 44px; /* Apple/Google recommended touch target */
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 14px;
+  }
 }

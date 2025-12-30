@@ -241,3 +241,44 @@ textarea {
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.1);
 }
+
+@media (max-width: 768px) {
+    .create-page {
+        padding: 20px 16px;
+    }
+
+    .create-header h1 {
+        font-size: 22px;
+    }
+
+    .create-form {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .config-section {
+        padding: 16px;
+    }
+
+    .item-selection-grid {
+        grid-template-columns: 1fr;
+        max-height: 350px;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 12px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        padding: 14px;
+        text-align: center;
+    }
+}

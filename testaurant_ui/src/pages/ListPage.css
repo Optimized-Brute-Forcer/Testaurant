@@ -523,3 +523,76 @@ details pre.log-viewer {
 .cursor-pointer {
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    .list-page {
+        padding: 20px 16px;
+    }
+
+    .list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .header-right {
+        width: 100%;
+    }
+
+    .header-right .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+
+    .filter-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .filter-card {
+        padding: 1rem;
+    }
+
+    .filter-card .card-icon {
+        font-size: 1.5rem;
+    }
+
+    .filter-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .entity-table {
+        min-width: 800px;
+        /* Ensure table doesn't squish too much */
+    }
+
+    .entity-table th,
+    .entity-table td {
+        padding: 12px 16px;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .role-select-compact {
+        padding: 8px 12px !important;
+        font-size: 14px !important;
+    }
+
+    .btn-icon {
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-cards {
+        grid-template-columns: 1fr;
+    }
+}
