@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://51.20.37.236:8080'
+const API_BASE_URL = 'https://testaurant-api-proxy.netlify.app'
 
 console.log('API Base URL:', API_BASE_URL)
 
