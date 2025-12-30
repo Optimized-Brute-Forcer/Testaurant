@@ -1,2 +1,2 @@
-/api/*     https://testaurant-be.onrender.com/testaurant/v1/:splat  200
+/api/*     http://51.20.37.236:8080/:splat  200
 /*          /index.html                                          200
