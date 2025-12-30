@@ -2,7 +2,8 @@ import axios from 'axios'
 
 const API_BASE_URL = 'https://testaurant-api-proxy.netlify.app'
 
-console.log('API Base URL:', API_BASE_URL)
+console.log('API Base URL (v3):', API_BASE_URL)
+console.log('Build Timestamp:', '2025-12-30 17:00')
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
