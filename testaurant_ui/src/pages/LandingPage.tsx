@@ -40,15 +40,12 @@ export default function LandingPage() {
                             <button className="cta-btn main" onClick={() => navigate('/login')}>
                                 Get Started for Free
                             </button>
-                            <a
-                                href="https://testaurant-api-proxy.netlify.app/docs#/"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <button
                                 className="cta-btn secondary"
-                                style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}
+                                onClick={() => window.open('https://testaurant-api-proxy.netlify.app/lld', '_blank')}
                             >
                                 View Documentation
-                            </a>
+                            </button>
                         </div>
                     </div>
                     <div className="hero-visual">
