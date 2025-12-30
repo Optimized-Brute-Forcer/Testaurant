@@ -1,11 +1,11 @@
-[build]
-  command = "cd testaurant_ui && npm install && npm run build"
-  publish = "testaurant_ui/dist"
+# Netlify Configuration
+# Last Updated: 2025-12-30 16:28
 
-[build.environment]
-  NODE_VERSION = "20"
-  PYTHON_VERSION = "3.11"
-  SECRETS_SCAN_OMIT_KEYS = "PORT,HOST,MONGODB_DB_NAME,JWT_ALGORITHM,JWT_EXPIRATION_MINUTES,ALLOWED_ORIGINS,GOOGLE_CLIENT_ID,VITE_GOOGLE_CLIENT_ID"
+[[redirects]]
+  from = "/proxy-test"
+  to = "https://www.google.com"
+  status = 302
+  force = true
 
 [[redirects]]
   from = "/api/*"
@@ -14,15 +14,19 @@
   force = true
 
 [[redirects]]
-  from = "/proxy-test"
-  to = "https://www.google.com"
-  status = 301
-  force = true
-
-[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false
+
+[build]
+  command = "cd testaurant_ui && npm install && npm run build"
+  publish = "testaurant_ui/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PYTHON_VERSION = "3.11"
+  SECRETS_SCAN_OMIT_KEYS = "PORT,HOST,MONGODB_DB_NAME,JWT_ALGORITHM,JWT_EXPIRATION_MINUTES,ALLOWED_ORIGINS,GOOGLE_CLIENT_ID,VITE_GOOGLE_CLIENT_ID"
 
 [[headers]]
   for = "/*"
